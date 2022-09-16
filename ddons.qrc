@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/resources">
+        <file>styles/darkgold.qss</file>
+        <file>Resource/icon.png</file>
+        <file>Resource/icon_lot.png</file>
+        <file>Resource/icon_stone.png</file>
+        <file>Resource/styles/VL-PGothic-Regular.ttf</file>
+        <file>Resource/cici2.png</file>
+        <file>Resource/buttonbrd.png</file>
+        <file>Resource/icon_pawn.png</file>
+    </qresource>
+</RCC>
