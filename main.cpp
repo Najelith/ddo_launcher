@@ -32,10 +32,9 @@ a.setFont(vlfont);
     }
 a.setApplicationName("Dragon's Dogma Online Launcher");
 a.setApplicationDisplayName("Dragon's Dogma Online Launcher");
-    //Dialog w;
-    DDOLauncher m;
 
-  //  w.show();
+    QString serverSettingsPath = QCoreApplication::applicationDirPath().append("/DDO_Launcher.ini");
+    DDOLauncher m(serverSettingsPath);
     m.show();
 
 

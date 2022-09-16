@@ -6,10 +6,13 @@ const unsigned int DDOLauncher::MaxHeight=280;
 const QString DDOLauncher::SizeStr("size");
 const QString DDOLauncher::PtStr("point");
 
-DDOLauncher::DDOLauncher(QMainWindow *parent)
+DDOLauncher::DDOLauncher(QString serverSettingsPath, QMainWindow *parent)
     : QMainWindow(parent),
-      m_settings("DDO_Launcher","DDO_Launcher")
+      m_settings("DDO_Launcher","DDO_Launcher"),
+      server_settings(serverSettingsPath, QSettings::IniFormat)
 {
+    qDebug() << "Loading server settings from file: " << serverSettingsPath;
+
     if (this->objectName().isEmpty())
         this->setObjectName(QStringLiteral("Model Editor"));
 
@@ -134,12 +137,12 @@ DDOLauncher::DDOLauncher(QMainWindow *parent)
     horizontalLayout_3->addWidget(label_meshcount);
     horizontalLayout_3->addWidget(meshcount);
     meshcount->setToolTip("DL argument (just include the host name or ip, this is the http server)");
-    QString dlIp=m_settings.value(tr("DLIP"), "localhost").toString();
+    QString dlIp=server_settings.value(tr("DLIP"), "localhost").toString();
     meshcount->setText(dlIp);
     horizontalLayout_3->addWidget(label_materialcount);
     horizontalLayout_3->addWidget(materialcount);
     materialcount->setToolTip("DL argument (just include the port, this is the http server)");
-    int dlport=m_settings.value(tr("DLPort"), 52099).toInt();
+    int dlport=server_settings.value(tr("DLPort"), 52099).toInt();
     materialcount->setText(QString::number(dlport));
 
 
@@ -149,13 +152,13 @@ DDOLauncher::DDOLauncher(QMainWindow *parent)
     horizontalLayout_1->addWidget(label);
     horizontalLayout_1->addWidget(spinBox);
     spinBox->setToolTip("Addr argument (this would be the lobby server's ip)");
-    QString LIp=m_settings.value(tr("LobbyIP"), "localhost").toString();
+    QString LIp=server_settings.value(tr("LobbyIP"), "localhost").toString();
     spinBox->setText(LIp);
 // server port
     horizontalLayout_1->addWidget(label_2);
     horizontalLayout_1->addWidget(spinBoxMax);
     spinBoxMax->setToolTip("Port argument (this would be the lobby server's port)");
-    int lport=m_settings.value(tr("LPort"), 52100).toInt();
+    int lport=server_settings.value(tr("LPort"), 52100).toInt();
     spinBoxMax->setText(QString::number(lport));
 
 
@@ -381,11 +384,11 @@ DDOLauncher::~DDOLauncher()
     this->m_settings.setValue(PtStr,this->pos());
 
     // save dl server info
-    this->m_settings.setValue(tr("DLIP"),meshcount->text());
-    this->m_settings.setValue(tr("DLPort"),materialcount->text().toInt());
+    this->server_settings.setValue(tr("DLIP"),meshcount->text());
+    this->server_settings.setValue(tr("DLPort"),materialcount->text().toInt());
     // save lobby server info
-    this->m_settings.setValue(tr("LobbyIP"),spinBox->text());
-    this->m_settings.setValue(tr("LPort"),spinBoxMax->text().toInt());
+    this->server_settings.setValue(tr("LobbyIP"),spinBox->text());
+    this->server_settings.setValue(tr("LPort"),spinBoxMax->text().toInt());
 
     if(rememberme->isChecked()){
       this->m_settings.setValue(tr("Account"),acclogintext->text());

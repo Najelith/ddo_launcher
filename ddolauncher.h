@@ -62,7 +62,7 @@ public:
     static const QString PtStr;
 
 
-    explicit DDOLauncher(QMainWindow *parent = 0);
+    explicit DDOLauncher(QString serverSettingsPath = "./DDO_Launcher.ini", QMainWindow *parent = 0);
     ~DDOLauncher();
 
 
@@ -72,6 +72,7 @@ protected:
 private:
 
     QSettings    m_settings;
+    QSettings    server_settings;
 
     QStatusBar * mStatusbar;
     QProgressBar * mProgressbar;
