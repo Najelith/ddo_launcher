@@ -488,7 +488,7 @@ void DDOLauncher::onManagerFinished(QNetworkReply *reply)
                                 materialcount->text()
                                 ));
          qDebug() << "TOKEN: "<< Token.toString();
-         exit(0);
+         QApplication::quit();
     }
     else{
         if(!Message.isNull()){
