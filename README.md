@@ -10,7 +10,7 @@ ddon launcher designed to communicate with account api of [emulation server.](ht
 
 # Build instructions
 
-*   Install qt (tested with v. 5.12.2 via mingew 73\_32)
+*   Install qt (tested with v. 5.12.2 via mingew 73\_32) or build a static qt
 
 *   Open .pro file in qtcreator
 
@@ -19,4 +19,3 @@ ddon launcher designed to communicate with account api of [emulation server.](ht
 *   Use qdeploy for your platform to find all dependencies
 
 *   Copy exe and all dependencies in to ddon base folder
-
