@@ -34,18 +34,19 @@ jobs:
         run: Invoke-WebRequest https://github.com/alex290/qtStatic/releases/download/5.15.1/mingw81_64_static.zip -OutFile staticqt.zip
       - name: Unzip static Qt build
         run: |
-          Expand-Archive .\staticqt.zip -DestinationPath .\QtStatic
-          tree .\QtStatic /F
+          Expand-Archive .\staticqt.zip -DestinationPath C:\QtStatic
+          tree C:\QtStatic /F
           
       - name: Create build directory
         run: mkdir build
       - name: Build
         working-directory: .\build
         run: |
-          ..\QtStatic\mingw81_64_static\bin\qmake.exe ..\ddo_launcher\DDO_Launcher.pro -spec win32-g++ CONFIG+=release QMAKE_LFLAGS_RELEASE+=" -static -static-libgcc"
+          ECHO %PATH%
+          C:\QtStatic\mingw81_64_static\bin\qmake.exe ..\ddo_launcher\DDO_Launcher.pro -spec win32-g++ CONFIG+=release QMAKE_LFLAGS_RELEASE+=" -static -static-libgcc"
+          Get-Location
           mingw32-make.exe -f Makefile qmake_all
           mingw32-make.exe -j4 -f Makefile.Release
-          nmake
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1.0.0
