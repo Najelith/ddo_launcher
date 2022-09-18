@@ -2,8 +2,9 @@ name: new-release
 env:
 #  PATH:     "..\\QtStatic\\mingw81_64_static\\bin\\"
   QT_VERSION: '5.15.1' 
-  QT_BIN_DIR: ../QtStatic/mingw81_64_static/bin
- 
+  QT_BIN_DIR: C:\QtStatic\mingw81_64_static\bin
+  QT5_BIN_DIR: C:\QtStatic\mingw81_64_static\bin
+  
 on:
   push:
     branches:
@@ -23,13 +24,19 @@ jobs:
       - uses: egor-tensin/setup-mingw@v2
         with:
           platform: x86
-        
+          
+     # TODO: automate this somehow?
+      - name: Set paths to newly installed static Qt libraries
+        run: |
+         echo QT5_BIN_DIR=${{ QT5_BIN_DIR }} >> $env:GITHUB_ENV
+         
       - name: Download static Qt build
         run: Invoke-WebRequest https://github.com/alex290/qtStatic/releases/download/5.15.1/mingw81_64_static.zip -OutFile staticqt.zip
       - name: Unzip static Qt build
         run: |
           Expand-Archive .\staticqt.zip -DestinationPath .\QtStatic
           tree .\QtStatic /F
+          
       - name: Create build directory
         run: mkdir build
       - name: Build
@@ -38,6 +45,7 @@ jobs:
           ..\QtStatic\mingw81_64_static\bin\qmake.exe ..\ddo_launcher\DDO_Launcher.pro -spec win32-g++ CONFIG+=release QMAKE_LFLAGS_RELEASE+=" -static -static-libgcc"
           mingw32-make.exe -f Makefile qmake_all
           mingw32-make.exe -j4 -f Makefile.Release
+          nmake
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1.0.0
