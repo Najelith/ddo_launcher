@@ -1,11 +1,7 @@
 name: new-release
-
 env:
-  QT_VERSION:     "5.15.1"
-  MINGW_VERSION:  "win32_mingw73"
-  MINGW_PATH:     "mingw73_32"
-
-
+  PATH:     "..\\QtStatic\\mingw81_64_static\\bin\\"
+  
 on:
   push:
     branches:
@@ -37,7 +33,7 @@ jobs:
       - name: Build
         working-directory: .\build
         run: |
-          ..\QtStatic\mingw81_64_static\bin\qmake.exe ..\ddo_launcher\DDO_Launcher.pro -spec win32-g++ CONFIG+=release
+          ..\QtStatic\mingw81_64_static\bin\qmake.exe ..\ddo_launcher\DDO_Launcher.pro -spec win32-g++ CONFIG+=release QMAKE_LFLAGS_RELEASE+=" -static -static-libgcc"
           mingw32-make.exe -f Makefile qmake_all
           mingw32-make.exe -j4 -f Makefile.Release
       - name: Create Release
