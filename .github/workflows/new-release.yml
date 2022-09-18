@@ -1,7 +1,7 @@
 name: new-release
 
 env:
-  QT_VERSION:     "5.12.7"
+  QT_VERSION:     "5.15.1"
   MINGW_VERSION:  "win32_mingw73"
   MINGW_PATH:     "mingw73_32"
 
@@ -22,9 +22,9 @@ jobs:
         run: |
           choco uninstall mingw --force
           choco uninstall strawberryperl --force
-      - uses: numworks/setup-msys2@v1
+      - uses: egor-tensin/setup-mingw@v2
         with:
-          msystem: MINGW32
+          platform: x86
         
       - name: Download static Qt build
         run: Invoke-WebRequest https://github.com/alex290/qtStatic/releases/download/5.15.1/mingw81_64_static.zip -OutFile staticqt.zip
