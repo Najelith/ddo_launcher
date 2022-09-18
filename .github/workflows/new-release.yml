@@ -1,0 +1,59 @@
+name: new-release
+
+env:
+  QT_VERSION:     "5.12.7"
+  MINGW_VERSION:  "win32_mingw73"
+  MINGW_PATH:     "mingw73_32"
+
+
+on:
+  push:
+    branches:
+    - main
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          path: 'ddo_launcher'
+          
+      - name: Install correct version of mingw
+        run: |
+          choco uninstall mingw --force
+          choco uninstall strawberryperl --force
+      - uses: numworks/setup-msys2@v1
+        with:
+          msystem: MINGW32
+        
+      - name: Download static Qt build
+        run: Invoke-WebRequest https://github.com/alex290/qtStatic/releases/download/5.15.1/mingw81_64_static.zip -OutFile staticqt.zip
+      - name: Unzip static Qt build
+        run: |
+          Expand-Archive .\staticqt.zip -DestinationPath .\QtStatic
+          tree .\QtStatic /F
+      - name: Create build directory
+        run: mkdir build
+      - name: Build
+        working-directory: .\build
+        run: |
+          ..\QtStatic\mingw81_64_static\bin\qmake.exe ..\ddo_launcher\DDO_Launcher.pro -spec win32-g++ CONFIG+=release
+          mingw32-make.exe -f Makefile qmake_all
+          mingw32-make.exe -j4 -f Makefile.Release
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: release-${GITHUB_SHA}
+          release_name: Release ${{ github.sha }}
+      - name: Upload binary
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ddo_launcher\release\DDO_Launcher.exe
+          asset_name: DDO_Launcher.exe
+          asset_content_type: application/vnd.microsoft.portable-executable
