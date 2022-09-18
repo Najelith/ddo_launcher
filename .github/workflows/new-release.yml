@@ -1,6 +1,6 @@
 name: new-release
-env:
-  PATH:     "..\\QtStatic\\mingw81_64_static\\bin\\"
+#env:
+#  PATH:     "..\\QtStatic\\mingw81_64_static\\bin\\"
   
 on:
   push:
@@ -34,8 +34,8 @@ jobs:
         working-directory: .\build
         run: |
           ..\QtStatic\mingw81_64_static\bin\qmake.exe ..\ddo_launcher\DDO_Launcher.pro -spec win32-g++ CONFIG+=release QMAKE_LFLAGS_RELEASE+=" -static -static-libgcc"
-          mingw32-make.exe -f Makefile qmake_all
-          mingw32-make.exe -j4 -f Makefile.Release
+#          mingw32-make.exe -f Makefile qmake_all
+#          mingw32-make.exe -j4 -f Makefile.Release
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1.0.0
