@@ -11,7 +11,7 @@ on:
     - main
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-latest        
     steps:
       - uses: actions/checkout@v3
         with:
@@ -28,7 +28,7 @@ jobs:
      # TODO: automate this somehow?
       - name: Set paths to newly installed static Qt libraries
         run: |
-         echo QT5_BIN_DIR=${{ QT5_BIN_DIR }} >> $env:GITHUB_ENV
+         echo QT5_BIN_DIR=${{ env.QT5_BIN_DIR }} >> $env:GITHUB_ENV
          
       - name: Download static Qt build
         run: Invoke-WebRequest https://github.com/alex290/qtStatic/releases/download/5.15.1/mingw81_64_static.zip -OutFile staticqt.zip
