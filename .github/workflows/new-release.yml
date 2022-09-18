@@ -42,9 +42,7 @@ jobs:
       - name: Build
         working-directory: .\build
         run: |
-          ECHO %PATH%
           C:\QtStatic\mingw81_64_static\bin\qmake.exe ..\ddo_launcher\DDO_Launcher.pro -spec win32-g++ CONFIG+=release QMAKE_LFLAGS_RELEASE+=" -static -static-libgcc"
-          ECHO Get-Location
           mingw32-make.exe -f Makefile qmake_all
           mingw32-make.exe -j4 -f Makefile.Release
       - name: Create Release
@@ -61,6 +59,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ddo_launcher\release\DDO_Launcher.exe
+          asset_path: ddo_launcher\build\release\DDO_Launcher.exe
           asset_name: DDO_Launcher.exe
           asset_content_type: application/vnd.microsoft.portable-executable
