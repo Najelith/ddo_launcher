@@ -21,9 +21,10 @@ jobs:
         run: |
           choco uninstall mingw --force
           choco uninstall strawberryperl --force
-      - uses: egor-tensin/setup-mingw@v2
+      - uses: e-t-l/setup-mingw@patch-1
         with:
           platform: x64
+          version: 11.2.0.07112021
           
      # TODO: automate this somehow?
       - name: Set paths to newly installed static Qt libraries
@@ -51,7 +52,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: release-${GITHUB_SHA}
+          tag_name: release-${{ github.sha }}
           release_name: Release ${{ github.sha }}
       - name: Upload binary
         uses: actions/upload-release-asset@v1.0.1
