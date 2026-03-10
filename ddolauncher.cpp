@@ -340,7 +340,7 @@ QGroupBox * reg =  new QGroupBox(this);
 reg->setMinimumWidth(800);
                             label_bounding_sphere->setText(QApplication::translate("DDOLauncher", "E-mail: ", 0));
                             label_bounding_boxmin->setText(QApplication::translate("DDOLauncher", "Account ID: ", 0));
-                            label_bounding_boxmax->setText(QApplication::translate("DDOLauncher", "Pasword: ", 0));
+                            label_bounding_boxmax->setText(QApplication::translate("DDOLauncher", "Password: ", 0));
 
 Texturestabs->addTab(reg,"Register");
 
